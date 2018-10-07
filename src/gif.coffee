@@ -51,8 +51,13 @@ class GIF extends EventEmitter
     @setOption 'width', image.width unless @options.width?
     @setOption 'height', image.height unless @options.height?
 
-    if ImageData? and image instanceof ImageData
-       frame.data = image.data
+    if image instanceof Uint8ClampedArray
+        if @options.width? and @options.width?
+          frame.data = image
+        else
+          throw new Error 'Must specify dimensions if image is byte array'
+    else if ImageData? and image instanceof ImageData
+        frame.data = image.data
     else if (CanvasRenderingContext2D? and image instanceof CanvasRenderingContext2D) or (WebGLRenderingContext? and image instanceof WebGLRenderingContext)
       if options.copy
         frame.data = @getContextData image
